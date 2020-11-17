@@ -41,19 +41,18 @@ RSpec.describe User, type: :model do
 
       @user1 = User.new(
         :name => "John",
-        :email => "dave@DAVE.com",
+        :email => "dave@dave.com",
         :password => "123",
         :password_confirmation => "123")
       @user1.save
 
       @user2 = User.new(
         :name => "John",
-        :email => "dave@dave.com",
+        :email => "dave@DAVE.com",
         :password => "123",
         :password_confirmation => "123")
       @user2.save
-        puts @user1.inspect
-        puts @user2.inspect
+
       expect(@user2.errors.full_messages).to include("Email has already been taken")
     end
   end

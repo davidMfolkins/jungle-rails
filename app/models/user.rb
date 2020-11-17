@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  before_save :cleanup_email
+  before_validation :cleanup_email
   def cleanup_email
     self.email.downcase!
     self.email.strip!
@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   end
 
   has_secure_password
-  validates :email, uniqueness: { case_sensitive: false }, uniqueness: true
+  validates :email, uniqueness: true
   validates :password, length: { minimum: 3 }
   
 end
