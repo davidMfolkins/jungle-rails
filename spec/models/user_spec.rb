@@ -41,24 +41,66 @@ RSpec.describe User, type: :model do
 
       @user1 = User.new(
         :name => "John",
-        :email => "John@john.com",
+        :email => "dave@DAVE.com",
         :password => "123",
         :password_confirmation => "123")
       @user1.save
 
       @user2 = User.new(
         :name => "John",
-        :email => "John@JOHN.com",
+        :email => "dave@dave.com",
         :password => "123",
         :password_confirmation => "123")
       @user2.save
-
+        puts @user1.inspect
+        puts @user2.inspect
       expect(@user2.errors.full_messages).to include("Email has already been taken")
     end
   end
 
   describe '.authenticate_with_credentials' do
-    # examples for this class method here
+    
+    it "should log in succesfully" do
+
+      @user = User.new(
+        :name => "John",
+        :email => "john@john.com",
+        :password => "123",
+        :password_confirmation => "123")
+      @user.save
+
+      expect(User.authenticate_with_credentials("john@john.com", "123")).to be_truthy
+      
+
+    end
+
+    it "should log in succesfully even with non case sensitivity" do
+
+      @user = User.new(
+        :name => "John",
+        :email => "john@john.com",
+        :password => "123",
+        :password_confirmation => "123")
+      @user.save
+
+      expect(User.authenticate_with_credentials("JOHN@john.com", "123")).to be_truthy
+      
+
+    end
+
+    it "should log in succesfully even with white space" do
+
+      @user = User.new(
+        :name => "John",
+        :email => "john@john.com",
+        :password => "123",
+        :password_confirmation => "123")
+      @user.save
+
+      expect(User.authenticate_with_credentials("  john@john.com  ", "123")).to be_truthy
+      
+
+    end
   end
   
 end

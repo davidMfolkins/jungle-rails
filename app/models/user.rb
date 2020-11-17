@@ -1,8 +1,15 @@
 class User < ActiveRecord::Base
-
-  has_secure_password
+  validates_uniqueness_of :email
+  
+  before_save :cleanup_email
+  def cleanup_email
+    self.email.downcase!
+    self.email.strip!
+  end
 
   def self.authenticate_with_credentials(email, password)
+    email.downcase!
+    email.strip!  
     user = User.find_by_email(email)
     if user && user.authenticate(password)
       user
@@ -10,9 +17,9 @@ class User < ActiveRecord::Base
       nil
     end
   end
-  
-  validates :email, uniqueness: { case_sensitive: false }
-  validates :password, length: { minimum: 3 }
 
+  has_secure_password
+  validates :email, uniqueness: { case_sensitive: false }, uniqueness: true
+  validates :password, length: { minimum: 3 }
   
 end
