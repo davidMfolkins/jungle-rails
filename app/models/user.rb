@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
-  validates_uniqueness_of :email
-  
+
   before_save :cleanup_email
   def cleanup_email
     self.email.downcase!
